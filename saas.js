@@ -234,3 +234,22 @@ Votre choix : `);
 }
 
 menu();
+
+
+function afficher_le_trajet(list) {
+
+    console.log("=== TRAJETS DISPONIBLES ===");
+    console.log("");
+
+    for (let trip of list) {
+
+        console.log("#" + trip.id + " " + trip.departure + " → " + trip.destination);
+        console.log("Départ : " + trip.departureTime);
+        console.log("Arrivée : " + trip.arrivalTime);
+        console.log("Prix : " + trip.price + " DH");
+        console.log("Places disponibles : " + trip.availableSeats);
+        console.log("");
+
+    }
+}
+
