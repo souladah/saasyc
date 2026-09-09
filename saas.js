@@ -367,4 +367,25 @@ function rechercher_ticket() {
         console.log("Prix : " + ticket.price + " DH");
     }
 }
+function filtrer_trajets() {
+
+    let villeDepart = prompt("Ville de départ : ");
+
+    let resultats = trips.filter(trip =>
+        trip.departure === villeDepart
+    );
+
+    if (resultats.length === 0) {
+        console.log("Aucun trajet trouvé.");
+        return;
+    }
+
+    for (let trip of resultats) {
+        console.log(
+            trip.departure + " → " +
+            trip.destination + " : " +
+            trip.price + " DH"
+        );
+    }
+}
 menu();
