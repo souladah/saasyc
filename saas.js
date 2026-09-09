@@ -183,68 +183,17 @@ const trips = [
     }
 ];
 
-const tickets = [];
+let  tickets = [];
 
 
-function menu() {
-
-    console.log(`
-=================================
-        RAILWAY MANAGER
-=================================
-
-1. Afficher les trajets
-2. Acheter un ticket
-3. Afficher les tickets
-4. Annuler un ticket
-5. Rechercher un ticket
-6. Filtrer les trajets
-7. Trier les trajets
-0. Quitter
-`);
-
-    let choice = Number(prompt("Votre choix : "));
-
-    while (choice !== 0) {
-
-        if (choice === 1) {
-            afficher_le_trajet(trips);
-
-        } else if (choice === 2) {
-            acheter_ticket();
-
-        } else if (choice === 3) {
-            afficher_tickets();
-
-        } else if (choice === 4) {
-            annuler_ticket();
-
-        } else if (choice === 5) {
-            rechercher_ticket();
-
-        } else if (choice === 6) {
-            filtrer_trajets();
-
-        } else if (choice === 7) {
-            trier_trajets();
-
-        } else {
-            console.log("Choix invalide !");
-        }
-
-        choice = Number(prompt("Votre choix : "));
-    }
-
-    console.log("Au revoir !");
-}
 
 
-function afficher_le_trajet(list) {
+function afficher_le_trajet() {
 
     console.log("=== TRAJETS DISPONIBLES ===");
     console.log("");
 
-    for (let trip of list) {
+    for (let trip of trips) {
 
         console.log("#" + trip.id + " " + trip.departure + " → " + trip.destination);
         console.log("Départ : " + trip.departureTime);
@@ -388,4 +337,69 @@ function filtrer_trajets() {
         );
     }
 }
+
+
+
+
+function menu() {
+
+    console.log(`
+=================================
+        RAILWAY MANAGER
+=================================
+
+1. Afficher les trajets
+2. Acheter un ticket
+3. Afficher les tickets
+4. Annuler un ticket
+5. Rechercher un ticket
+6. Filtrer les trajets
+7. Trier les trajets
+0. Quitter
+`);
+
+    let choice = Number(prompt("Votre choix : "));
+
+    while (choice !== 0) {
+
+        switch (choice) {
+
+            case 1:
+                afficher_le_trajet();
+                break;
+
+            case 2:
+                acheter_ticket();
+                break;
+
+            case 3:
+                afficher_tickets();
+                break;
+
+            case 4:
+                annuler_ticket();
+                break;
+
+            case 5:
+                rechercher_ticket();
+                break;
+
+            case 6:
+                filtrer_trajets();
+                break;
+
+            case 7:
+                trier_trajets();
+                break;
+
+            default:
+                console.log("Choix invalide !");
+        }
+
+        choice = Number(prompt("Votre choix : "));
+    }
+
+    console.log("Au revoir !");
+}
+
 menu();
