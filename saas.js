@@ -338,7 +338,18 @@ function filtrer_trajets() {
     }
 }
 
+function trier_trajets() {
 
+  for (let i = 0; i < trips.length - 1; i++) {
+     for (let j = 0; j < trips.length - 1 - i; j++) {
+        if (trips[j].price > trips[j + 1].price) {
+            let temp = trips[j];
+            trips[j] = trips[j + 1];
+            trips[j + 1] = temp;
+        }
+     }
+  }  
+}
 
 
 function menu() {
