@@ -322,5 +322,22 @@ function afficher_tickets() {
     }
 }
 
+function annuler_ticket() {
 
+    let idticket = Number(prompt("Entrer id de ticket : "));
+
+    let ticket = tickets.find(ticket => ticket.id === idticket);
+
+    if (!ticket) {
+        return console.log("Ticket introuvable.");
+    }
+
+    let trajet = trips.find(trip => trip.id === ticket.tripId);
+
+    tickets = tickets.filter(ticket => ticket.id !== idticket);
+
+    trajet.availableSeats = trajet.availableSeats + 1;
+
+    console.log("Ticket annulé avec succès.");
+}
 menu();
