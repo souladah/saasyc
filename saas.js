@@ -182,28 +182,55 @@ const trips = [
     }
 ];
 
-if (choice === "1") {
-    afficher_le_trajet();
+function menu() {
 
-} else if (choice === "2") {
-    acheter_ticket();
+    let choice = prompt(`
+==============================
+       GESTION TRAJETS
+==============================
 
-} else if (choice === "3") {
-    afficher_tickets();
+1. Afficher les trajets
+2. Acheter un ticket
+3. Afficher les tickets
+4. Annuler un ticket
+5. Rechercher un ticket
+6. Filtrer les trajets
+7. Trier les trajets
+0. Quitter
 
-} else if (choice === "4") {
-    annuler_ticket();
+Votre choix : `);
 
-} else if (choice === "5") {
-    rechercher_ticket();
+    while (choice !== "0") {
 
-} else if (choice === "6") {
-    filtrer_trajets();
+        if (choice === "1") {
+            afficher_le_trajet();
 
-} else if (choice === "7") {
-    trier_trajets();
+        } else if (choice === "2") {
+            acheter_ticket();
 
-} else {
-    console.log("Choix invalide !");
+        } else if (choice === "3") {
+            afficher_tickets();
+
+        } else if (choice === "4") {
+            annuler_ticket();
+
+        } else if (choice === "5") {
+            rechercher_ticket();
+
+        } else if (choice === "6") {
+            filtrer_trajets();
+
+        } else if (choice === "7") {
+            trier_trajets();
+
+        } else {
+            console.log("Choix invalide !");
+        }
+
+        choice = prompt("Votre choix : ");
+    }
+
+    console.log("Au revoir !");
 }
 
+menu();
