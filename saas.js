@@ -340,4 +340,31 @@ function annuler_ticket() {
 
     console.log("Ticket annulé avec succès.");
 }
+function rechercher_ticket() {
+
+    let nomPassager = prompt("Nom du passager : ");
+
+    let resultats = tickets.filter(ticket =>
+        ticket.passengerName === nomPassager
+    );
+
+    if (resultats.length === 0) {
+        console.log("Aucun ticket trouvé.");
+        return;
+    }
+
+    for (let ticket of resultats) {
+
+        let trajet = trips.find(trip =>
+            trip.id === ticket.tripId
+        );
+
+        console.log("");
+        console.log("Ticket #" + ticket.id);
+        console.log("Passager : " + ticket.passengerName);
+        console.log("Trajet : " + trajet.departure + " → " + trajet.destination);
+        console.log("Place : " + ticket.seatNumber);
+        console.log("Prix : " + ticket.price + " DH");
+    }
+}
 menu();
