@@ -210,9 +210,7 @@ function acheter_ticket() {
     let nomPassager = prompt("Nom du passager : ");
     let identifiantTrajet = Number(prompt("Identifiant du trajet : "));
 
-    let trajet = trips.find(function(trip) {
-        return trip.id === identifiantTrajet;
-    });
+    let trajet = trips.find(trip => trip.id === identifiantTrajet);
 
     if (!trajet) {
         console.log("Trajet introuvable.");
@@ -258,9 +256,7 @@ function afficher_tickets() {
 
     for (let ticket of tickets) {
 
-        let trajet = trips.find(function(trip) {
-            return trip.id === ticket.tripId;
-        });
+        let trajet = trips.find(trip => trip.id === ticket.tripId);
 
         console.log("Ticket #" + ticket.id);
         console.log("Passager : " + ticket.passengerName);
