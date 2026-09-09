@@ -182,5 +182,28 @@ const trips = [
     }
 ];
 
+if (choice === "1") {
+    afficher_le_trajet();
 
+} else if (choice === "2") {
+    acheter_ticket();
+
+} else if (choice === "3") {
+    afficher_tickets();
+
+} else if (choice === "4") {
+    annuler_ticket();
+
+} else if (choice === "5") {
+    rechercher_ticket();
+
+} else if (choice === "6") {
+    filtrer_trajets();
+
+} else if (choice === "7") {
+    trier_trajets();
+
+} else {
+    console.log("Choix invalide !");
+}
 
