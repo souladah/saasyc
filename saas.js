@@ -275,8 +275,9 @@ function acheter_ticket() {
         return;
     }
 
-    let numeroPlace =50- trajet.availableSeats -1;
-    trajet.availableSeats -=1;
+    let numeroPlace = 50 - trajet.availableSeats + 1;
+
+    trajet.availableSeats = trajet.availableSeats - 1;
 
     let ticket = {
         id: tickets.length + 1,
@@ -295,6 +296,30 @@ function acheter_ticket() {
     console.log("Trajet : " + trajet.departure + " → " + trajet.destination);
     console.log("Place : " + ticket.seatNumber);
     console.log("Prix : " + ticket.price + " DH");
+}
+function afficher_tickets() {
+
+    if (tickets.length === 0) {
+        console.log("Aucun ticket enregistré.");
+        return;
+    }
+
+    console.log("=== TICKETS ===");
+    console.log("");
+
+    for (let ticket of tickets) {
+
+        let trajet = trips.find(function(trip) {
+            return trip.id === ticket.tripId;
+        });
+
+        console.log("Ticket #" + ticket.id);
+        console.log("Passager : " + ticket.passengerName);
+        console.log("Trajet : " + trajet.departure + " → " + trajet.destination);
+        console.log("Place : " + ticket.seatNumber);
+        console.log("Prix : " + ticket.price + " DH");
+        console.log("");
+    }
 }
 
 
