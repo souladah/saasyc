@@ -209,9 +209,9 @@ var nextTicketId = 1;
 
 function acheterTicket() {
 
-    var passengerName = prompt("Nom du passager : ").trim().toLowerCase();
+    var name_ = prompt("Nom du passager : ").trim().toLowerCase();
 
-    if (passengerName === "") {
+    if (name_ === "") {
         return "Le nom du passager est obligatoire.";
     }
 
@@ -253,7 +253,7 @@ function acheterTicket() {
 
     var ticket = {
         id: nextTicketId,
-        passengerName: passengerName,
+        passengerName: name_,
         tripId: trip.id,
         seatNumber: seatNumber,
         price: trip.price
@@ -446,17 +446,12 @@ function trierTrajets() {
         }
     }
 
-    var resultat = "";
-
-    for (var k = 0; k < trips.length; k++) {
-
-        resultat +=
-            trips[k].departure + " → " +
-            trips[k].destination + " : " +
-            trips[k].price + " DH\n";
-    }
-
-    return resultat;
+   let resultat ;
+   for(let trip of trips){
+       resultat+= trip.departure +"->"+trip.destination +" :  " + trip.price+"\n";
+   }
+   return resultat
+   
 }
 
 function menu() {
@@ -525,3 +520,4 @@ function menu() {
 }
 
 menu();
+
