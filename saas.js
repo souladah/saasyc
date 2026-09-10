@@ -184,7 +184,7 @@ const trips = [
 ];
 const tickets = [];
 
-var nextTicketId = 1;
+
 
 function afficherTrajets() {
 
@@ -192,7 +192,7 @@ function afficherTrajets() {
 
     for (var i = 0; i < trips.length; i++) {
 
-        resultat +=
+         resultat+=
             "#" + trips[i].id + " " +
             trips[i].departure + " → " +
             trips[i].destination + "\n" +
@@ -202,82 +202,77 @@ function afficherTrajets() {
             "Places disponibles : " + trips[i].availableSeats +
             "\n\n";
     }
+    return resultat ;
 
-    return resultat;
 }
+var nextTicketId = 1;
 
 function acheterTicket() {
 
-    var passengerName = prompt(
-        "Nom du passager : "
-    ).trim().toLowerCase();
+    var passengerName = prompt("Nom du passager : ").trim().toLowerCase();
 
     if (passengerName === "") {
         return "Le nom du passager est obligatoire.";
     }
 
-    var tripId = Number(
+    var input_tripId = Number(
         prompt("Identifiant du trajet : ")
     );
 
-    var findtrip = "";
+    var trip = null;
 
     for (var i = 0; i < trips.length; i++) {
 
-        if (trips[i].id === tripId) {
-            findtrip = trips[i];
+        if (trips[i].id === input_tripId) {
+            trip = trips[i];
             break;
         }
     }
 
-    if (findtrip === "") {
+    if (trip === null) {
         return "Trajet introuvable.";
     }
 
-    if (findtrip.availableSeats === 0) {
+    if (trip.availableSeats === 0) {
         return "Train complet.";
     }
 
-var seatNumber = 1;
+    var seatNumber = 1;
 
-var j = 0;
+    var j=0 ;
+    while(j<tickets.length){
+ 
+        if(tickets[j].tripId===input_tripId && tickets[j].seatNumber===seatNumber ){
+            j=0
+            seatNumber++
+        }else{
+            j++
+        }
 
-while (j < tickets.length) {
-
-    if (
-        tickets[j].tripId === tripId &&
-        tickets[j].seatNumber === seatNumber
-    ) {
-        seatNumber++;
-        j = 0;
-    } else {
-        j++;
     }
-}
 
     var ticket = {
         id: nextTicketId,
         passengerName: passengerName,
-        tripId: findtrip.id,
+        tripId: trip.id,
         seatNumber: seatNumber,
-        price: findtrip.price
+        price: trip.price
     };
 
     tickets.push(ticket);
 
     nextTicketId++;
 
-    findtrip.availableSeats--;
+    trip.availableSeats--;
 
     return "Ticket acheté avec succès !\n" +
         "Ticket #" + ticket.id + "\n" +
         "Passager : " + ticket.passengerName + "\n" +
-        "Trajet : " +
-        findtrip.departure + " → " +
-        findtrip.destination + "\n" +
+        "Trajet : " + trip.departure + " → " + trip.destination + "\n" +
         "Place : " + ticket.seatNumber + "\n" +
         "Prix : " + ticket.price + " DH";
 }
+
 
 function afficherTickets() {
 
@@ -285,11 +280,11 @@ function afficherTickets() {
         return "Aucun ticket enregistré.";
     }
 
-    var resultat = "=== TICKETS ===\n\n";
+    var result = "affichage des ticket\n";
 
     for (var i = 0; i < tickets.length; i++) {
 
-        var trip ;
+        var trip = null;
 
         for (var j = 0; j < trips.length; j++) {
 
@@ -299,7 +294,7 @@ function afficherTickets() {
             }
         }
 
-        resultat +=
+        result +=
             "Ticket #" + tickets[i].id + "\n" +
             "Passager : " + tickets[i].passengerName + "\n" +
             "Trajet : " + trip.departure + " → " + trip.destination + "\n" +
@@ -307,21 +302,27 @@ function afficherTickets() {
             "Prix : " + tickets[i].price + " DH\n\n";
     }
 
-    return resultat;
+    return result;
 }
+
+
 
 function annulerTicket() {
 
-    var id = Number(
+    var input_id = Number(
         prompt("Identifiant du ticket : ")
     );
 
-    var index = -1;
+    
+   let index=-1;
+   let findedticket="";
 
     for (var i = 0; i < tickets.length; i++) {
 
-        if (tickets[i].id === id) {
+        if (tickets[i].id === input_id) {
             index = i;
+            findedticket=tickets[i]
+
             break;
         }
     }
@@ -330,13 +331,12 @@ function annulerTicket() {
         return "Ticket introuvable.";
     }
 
-    var ticket = tickets[index];
 
     tickets.splice(index, 1);
 
     for (var j = 0; j < trips.length; j++) {
 
-        if (trips[j].id === ticket.tripId) {
+        if (trips[j].id === findedticket.tripId) {
             trips[j].availableSeats++;
             break;
         }
@@ -424,6 +424,8 @@ function filtrerTrajets() {
 function trierTrajets() {
 
     for (var i = 0; i < trips.length - 1; i++) {
+        
+        var istried = true;
 
         for (var j = 0; j < trips.length - 1 - i; j++) {
 
@@ -434,7 +436,13 @@ function trierTrajets() {
                 trips[j] = trips[j + 1];
 
                 trips[j + 1] = temp;
+                istried=false ;
             }
+        
+        }
+        if(istried){
+            break ;
+            
         }
     }
 
