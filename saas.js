@@ -188,116 +188,80 @@ const trips = [
 const tickets = [];
 
 
-
-var nextTicketId = 1;
-
-
-
-
 function afficherTrajets() {
 
-    
+
 
     var lignes = trips.map(trip => {
 
         return "#" + trip.id + " " +
-               trip.departure + " → " +
-               trip.destination + "\n" +
-               "Départ : " + trip.departureTime + "\n" +
-               "Arrivée : " + trip.arrivalTime + "\n" +
-               "Prix : " + trip.price + " DH\n" +
-               "Places disponibles : " +
-               trip.availableSeats;
+            trip.departure + " → " +
+            trip.destination + "\n" +
+            "Départ : " + trip.departureTime + "\n" +
+            "Arrivée : " + trip.arrivalTime + "\n" +
+            "Prix : " + trip.price + " DH\n" +
+            "Places disponibles : " + trip.availableSeats;
     });
 
 
-    
+
     return "=== TRAJETS DISPONIBLES ===\n\n" +
-           lignes.join("\n\n");
+        lignes.join("\n\n");
 }
 
 
 
+var nextTicketId = 1; // a chaue fois quon achete un ticket  next id va sincrementer dans achterticket()
 
 function acheterTicket() {
 
-    
+
 
     var passengerName = prompt(
         "Nom du passager : "
-    ).trim();
-
-
-    
+    ).trim().toLowerCase();
 
     if (passengerName === "") {
         return "Le nom du passager est obligatoire.";
     }
 
-
-
-    var tripIdInput = prompt(
+    var tripId_input = Number(prompt(
         "Identifiant du trajet : "
+    ).trim());
+
+    var findtrip = trips.find(
+        trip => trip.id === tripId_input
     );
 
 
 
-    var tripId = Number(tripIdInput);
-
-
-
-
-    if (isNaN(tripId)) {
-        return "Veuillez entrer un identifiant valide (nombre).";
-    }
-
-
-    
-
-    var trip = trips.find(
-        t => t.id === tripId
-    );
-
-
-    
-    if (!trip) {
+    if (!findtrip) {
         return "Trajet introuvable.";
     }
 
 
 
 
-    if (trip.availableSeats <= 0) {
+    if (findtrip.availableSeats === 0) {
         return "Train complet.";
     }
 
 
-    
+
 
     var seatNumber = 1;
 
 
-    
-
-
-    while (
-        tickets.some(t =>
-            t.tripId === trip.id &&
-            t.seatNumber === seatNumber
-        )
+    while (tickets.some(ticket => ticket.tripId === findtrip.id && ticket.seatNumber === seatNumber) 
     ) {
-
-       
-
         seatNumber++;
     }
 
 
-    
 
     var ticket = {
 
-       
+
 
         id: nextTicketId,
 
@@ -305,13 +269,13 @@ function acheterTicket() {
         passengerName: passengerName,
 
 
-        tripId: trip.id,
+        tripId: findtrip.id,
 
 
         seatNumber: seatNumber,
 
 
-        price: trip.price
+        price: findtrip.price
     };
 
 
@@ -320,130 +284,101 @@ function acheterTicket() {
     tickets.push(ticket);
 
 
-    
+
 
     nextTicketId++;
 
 
-    
-
-    trip.availableSeats--;
 
 
-    
+    findtrip.availableSeats--;
+
+
+
 
     return "Ticket acheté avec succès !\n" +
-           "Ticket #" + ticket.id + "\n" +
-           "Passager : " + ticket.passengerName + "\n" +
-           "Trajet : " +
-           trip.departure + " → " +
-           trip.destination + "\n" +
-           "Place : " + ticket.seatNumber + "\n" +
-           "Prix : " + ticket.price + " DH";
+        "Ticket #" + ticket.id + "\n" +
+        "Passager : " + ticket.passengerName + "\n" +
+        "Trajet : " +
+        findtrip.departure + " → " +
+        findtrip.destination + "\n" +
+        "Place : " + ticket.seatNumber + "\n" +
+        "Prix : " + ticket.price + " DH";
 }
+
+
 
 
 
 
 function afficherTickets() {
 
-    
-
     if (tickets.length === 0) {
         return "Aucun ticket enregistré.";
     }
 
+    var resultat = "=== TICKETS ===\n\n";
 
+    for (var i = 0; i < tickets.length; i++) {
 
-    var lignes = tickets.map(ticket => {
-
-        
-
+// on doit verifier que les tickets qi se troouve dans ticket exist dans trips
         var trip = trips.find(
-            t => t.id === ticket.tripId
-        );
+            trip => trip.id === tickets[i].tripId); // trouver le trajet corespondant au ticket 
+        resultat +=
+            "Ticket #" + tickets[i].id + "\n" +
+            "Passager : " + tickets[i].passengerName + "\n" +
+            "Trajet : " +
+            trip.departure + " → " +
+            trip.destination + "\n" +
+            "Place : " + tickets[i].seatNumber + "\n" +
+            "Prix : " + tickets[i].price + " DH\n\n";
+    }
 
-
-        return "Ticket #" + ticket.id + "\n" +
-               "Passager : " + ticket.passengerName + "\n" +
-               "Trajet : " +
-               trip.departure + " → " +
-               trip.destination + "\n" +
-               "Place : " + ticket.seatNumber + "\n" +
-               "Prix : " + ticket.price + " DH";
-    });
-
-
-
-    return "=== TICKETS ===\n\n" +
-           lignes.join("\n\n");
+    return resultat;
 }
-
 
 
 function annulerTicket() {
 
-   
-
-    var idInput = prompt(
+    var idInput = Number(prompt(
         "Identifiant du ticket : "
-    );
+    ));
 
+    var index = -1;
 
+    for (var i = 0; i < tickets.length; i++) {
 
-    var ticketId = Number(idInput);
-
-
-    
-
-
-    
-
-    var index = tickets.findIndex(
-        t => t.id === ticketId
-    );
-
+        if (tickets[i].id === idInput) {
+            index = i;
+            break;
+        }
+    }
 
     if (index === -1) {
         return "Ticket introuvable.";
     }
 
-
-   
-
     var ticket = tickets[index];
-
-
-    
-
-    var trip = trips.find(
-        t => t.id === ticket.tripId
-    );
-
-
-    
 
     tickets.splice(index, 1);
 
+    var findtrip = trips.find(
+        trip => trip.id === ticket.tripId
+    );
 
-    
-
-    trip.availableSeats++;
-
+    findtrip.availableSeats++;
 
     return "Ticket annulé avec succès.";
 }
 
 
 
-
 function rechercherTicket() {
 
-    // Demander le nom du passager.
 
     var name = prompt(
         "Nom du passager : "
-    ).trim();
+    ).trim().toLowerCase();
 
 
 
@@ -452,42 +387,42 @@ function rechercherTicket() {
     }
 
 
-   
 
-    var resultats = tickets.filter(
-        t => t.passengerName === name
+
+    var filtredtickets = tickets.filter(
+        ticket => ticket.passengerName.toLowerCase() === name
     );
 
 
 
-    if (resultats.length === 0) {
+    if (filtredtickets.length === 0) {
         return "Aucun ticket trouvé pour ce passager.";
     }
 
 
 
-    var lignes = resultats.map(ticket => {
+    var lignes = filtredtickets.map(ticket => {
 
 
-        var trip = trips.find(
-            t => t.id === ticket.tripId
+        var findtrip = trips.find(
+            trip => trip.id === ticket.tripId
         );
 
 
         return "Ticket #" + ticket.id + "\n" +
-               "Passager : " +
-               ticket.passengerName + "\n" +
-               "Trajet : " +
-               trip.departure + " → " +
-               trip.destination + "\n" +
-               "Place : " +
-               ticket.seatNumber + "\n" +
-               "Prix : " +
-               ticket.price + " DH";
+            "Passager : " +
+            ticket.passengerName + "\n" +
+            "Trajet : " +
+            findtrip.departure + " → " +
+            findtrip.destination + "\n" +
+            "Place : " +
+            ticket.seatNumber + "\n" +
+            "Prix : " +
+            ticket.price + " DH";
     });
 
 
-    
+
 
     return lignes.join("\n\n");
 }
@@ -512,7 +447,7 @@ function filtrerTrajets() {
 
 
     var resultats = trips.filter(
-        t => t.departure.toLowerCase() === ville
+        trip => trip.departure.toLowerCase() === ville
     );
 
 
@@ -523,10 +458,10 @@ function filtrerTrajets() {
 
 
 
-    var lignes = resultats.map(t =>
-        t.departure + " → " +
-        t.destination + " : " +
-        t.price + " DH"
+    var lignes = resultats.map(trip =>
+        trip.departure + " → " +
+        trip.destination + " : " +
+        trip.price + " DH"
     );
 
 
@@ -538,63 +473,44 @@ function filtrerTrajets() {
 
 function trierTrajets() {
 
-
-
     for (var i = 0; i < trips.length - 1; i++) {
 
+        var estTrie = true;
 
-        
+        for (var j = 0; j < trips.length - 1 - i; j++) {
 
-        for (
-            var j = 0;
-            j < trips.length - 1 - i;
-            j++
-        ) {
-
-
-           
-
-            if (
-                trips[j].price >
-                trips[j + 1].price
-            ) {
-
-               
+            if (trips[j].price > trips[j + 1].price) {
 
                 var temp = trips[j];
 
-
-                
-
                 trips[j] = trips[j + 1];
 
-
-                
-
                 trips[j + 1] = temp;
+
+                estTrie = false;
             }
         }
+
+        if (estTrie) {
+            break;
+        }
     }
+    
 
-
-
-    var lignes = trips.map(t =>
-        t.departure + " → " +
-        t.destination + " : " +
-        t.price + " DH"
+    var lignes = trips.map(trip =>
+        trip.departure + " → " +
+        trip.destination + " : " +
+        trip.price + " DH"
     );
-
 
     return lignes.join("\n");
 }
 
 
 
-
 function menu() {
 
-    // Je commence avec -1
-    // pour entrer dans la boucle.
+
 
     var choix = -1;
 
@@ -603,7 +519,7 @@ function menu() {
 
     while (choix !== 0) {
 
-        
+
 
         console.log(
             "\n=================================\n" +
@@ -618,8 +534,9 @@ function menu() {
         console.log("5. Rechercher un ticket");
         console.log("6. Filtrer les trajets");
         console.log("7. Trier les trajets");
-        console.log("0. Quitter");
+        console.log("0. Quitter , ");
 
+        console.log("=================================\n");
 
 
         var input = prompt(
@@ -632,16 +549,7 @@ function menu() {
 
 
 
-        if (isNaN(choix)) {
 
-            console.log(
-                "Veuillez entrer un nombre."
-            );
-
-
-
-            continue;
-        }
 
 
 
@@ -727,7 +635,5 @@ function menu() {
         }
     }
 }
-
-
 
 menu();
