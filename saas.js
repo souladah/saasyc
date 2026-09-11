@@ -464,23 +464,19 @@ function statistiques() {
         chiffreAffaires += ticket.price;
     }
 
-    var nombreMaxTickets = -1;
-    var tripplusvendu = null;
+    let tripplusvendu = null;
+    let nombreMaxTickets = 0;
 
-    for (let trip of trips) {
-
-        var nombreTickets = 0;
-
-        for (let ticket of tickets) {
-
-            if (ticket.tripId === trip.id) {
-                nombreTickets += 1;
+    for(let trip of trips){
+        var NumberOfTicket=0;
+        for(let ticket of tickets){
+            if(trip.id===ticket.tripId){
+                NumberOfTicket++
             }
         }
-
-        if (nombreTickets > nombreMaxTickets) {
-            nombreMaxTickets = nombreTickets;
-            tripplusvendu = trip;
+        if(NumberOfTicket>nombreMaxTickets){
+            nombreMaxTickets=NumberOfTicket ;
+            tripplusvendu=trip
         }
     }
 
@@ -577,6 +573,7 @@ function menu() {
 }
 
 menu();
+
 
 
 
