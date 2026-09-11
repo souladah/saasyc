@@ -182,6 +182,8 @@ const trips = [
         availableSeats: 50
     }
 ];
+
+
 const tickets = [];
 
 
@@ -573,6 +575,7 @@ function menu() {
 }
 
 menu();
+
 
 
 
