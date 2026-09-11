@@ -251,6 +251,7 @@ function acheterTicket() {
 
     }
 
+
     var ticket = {
         id: nextTicketId,
         passengerName: name_,
@@ -446,17 +447,68 @@ function trierTrajets() {
         }
     }
 
-   let resultat ;
+   let resultat="" ;
    for(let trip of trips){
        resultat+= trip.departure +"->"+trip.destination +" :  " + trip.price+"\n";
    }
    return resultat
    
 }
+function statistiques() {
 
+    var totalTickets = tickets.length;
+
+    var chiffreAffaires = 0;
+
+    for (let ticket of tickets) {
+        chiffreAffaires += ticket.price;
+    }
+
+    var nombreMaxTickets = -1;
+    var tripplusvendu = null;
+
+    for (let trip of trips) {
+
+        var nombreTickets = 0;
+
+        for (let ticket of tickets) {
+
+            if (ticket.tripId === trip.id) {
+                nombreTickets += 1;
+            }
+        }
+
+        if (nombreTickets > nombreMaxTickets) {
+            nombreMaxTickets = nombreTickets;
+            tripplusvendu = trip;
+        }
+    }
+
+    var resultat =
+        "=== STATISTIQUES ===\n\n" +
+        "Nombre total de tickets : " + totalTickets + "\n" +
+        "Chiffre d'affaires total : " + chiffreAffaires + " DH\n\n";
+
+    if (tripplusvendu === null || nombreMaxTickets === 0) {
+
+        resultat +=
+            "Trajet le plus vendu :\n" +
+            "Aucun ticket vendu.";
+
+    } else {
+
+        resultat +=
+            "Trajet le plus vendu :\n\n" +
+            tripplusvendu.departure + " → " +
+            tripplusvendu.destination + "\n" +
+            nombreMaxTickets + " tickets vendus";
+    }
+
+    return resultat;
+}
 function menu() {
 
-    var choix = -1;
+    var choix =-1;
 
     while (choix !== 0) {
 
@@ -473,6 +525,8 @@ function menu() {
         console.log("5. Rechercher un ticket");
         console.log("6. Filtrer les trajets");
         console.log("7. Trier les trajets");
+        console.log("8 .statistique ");
+
         console.log("0. Quitter");
 
         choix = Number(
@@ -509,10 +563,13 @@ function menu() {
                 console.log(trierTrajets());
                 break;
 
+            case 8 :
+                console.log(statistiques()) ;
+                break ;
             case 0:
                 console.log("Au revoir !");
                 break;
-
+         
             default:
                 console.log("Choix invalide !");
         }
@@ -520,4 +577,6 @@ function menu() {
 }
 
 menu();
+
+
 
